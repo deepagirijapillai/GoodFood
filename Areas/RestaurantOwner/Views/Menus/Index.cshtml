@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GoodFood.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Menu Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Menu Items</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">+ Create New</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Dish Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Restaurant</th>
+            <th>Category</th>
+            <th>SubCategory</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.Restaurant?.Name</td>
+                <td>@item.Category?.Name</td>
+                <td>@item.SubCategory?.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="Image" width="60" height="60" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

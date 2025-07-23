@@ -1,0 +1,70 @@
+﻿# Build results
+bin/
+obj/
+out/
+[Bb]in/
+[Oo]bj/
+*.dll
+*.exe
+*.pdb
+*.mdb
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vsidx
+
+# Logs
+*.log
+*.tlog
+*.cache
+
+# ASP.NET Core
+wwwroot/dist/
+wwwroot/node_modules/
+wwwroot/lib/
+ScaffoldingReadMe.txt
+
+# Entity Framework
+**/Migrations/*Snapshot.cs
+*.db
+*.db-shm
+*.db-wal
+*.dbmdl
+
+# Secrets
+secrets/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+
+# JetBrains Rider
+.idea/
+.idea/.idea.DotSettings
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+/TemplateEngineHost/vs
+/app.db
+/app.db-shm
+/app.db-wal
+/GoodFood.csproj.user

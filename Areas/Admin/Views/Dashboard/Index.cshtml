@@ -1,0 +1,60 @@
+﻿@model GoodFood.Models.Category
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Welcome to Admin Dashboard</h2>
+<p class="text-muted">Manage platform data and monitor activity from here.</p>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Total Users</div>
+            <div class="card-body">
+                <h5 class="card-title">42</h5>
+                <p class="card-text">Registered Restaurant Owners & Delivery Personnel.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Total Categories</div>
+            <div class="card-body">
+                <h5 class="card-title">10</h5>
+                <p class="card-text">Available food categories for menus.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-header">Total Orders</div>
+            <div class="card-body">
+                <h5 class="card-title">128</h5>
+                <p class="card-text">Orders placed across all restaurants.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Coupons</div>
+            <div class="card-body">
+                <h5 class="card-title">5 Active</h5>
+                <p class="card-text">Ongoing coupon discounts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<h4>Quick Actions</h4>
+<ul>
+    <li><a href="/Admin/User">Manage Users</a></li>
+    <li><a href="/Admin/Category">Manage Categories</a></li>
+    <li><a href="/Admin/SubCategory">Manage SubCategories</a></li>
+    <li><a href="/Admin/Coupon">Manage Coupons</a></li>
+</ul>

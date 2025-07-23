@@ -1,0 +1,63 @@
+﻿@model GoodFood.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Create Menu Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Menu Item</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="control-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RestaurantId" class="control-label"></label>
+        <select asp-for="RestaurantId" asp-items="ViewBag.RestaurantList" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SubCategoryId" class="control-label"></label>
+        <select asp-for="SubCategoryId" asp-items="ViewBag.SubCategoryList" class="form-control">
+            <option value="">-- Select SubCategory --</option>
+        </select>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

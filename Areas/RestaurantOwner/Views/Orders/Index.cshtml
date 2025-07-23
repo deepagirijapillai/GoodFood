@@ -1,0 +1,51 @@
+﻿@model IEnumerable<GoodFood.Models.Restaurant>
+@{
+    ViewData["Title"] = "My Restaurants";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4 mb-3 text-center">🍽️ My Restaurants</h2>
+
+<div class="text-end mb-4">
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Add New Restaurant
+    </a>
+</div>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text text-muted mb-1">
+                            <strong>Description:</strong><br />
+                            @item.Description
+                        </p>
+                        <p class="card-text mb-3">
+                            <strong>Address:</strong><br />
+                            @item.Address
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center">
+        No restaurants found. Add your first one!
+    </div>
+}

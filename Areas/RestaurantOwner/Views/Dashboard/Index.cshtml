@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Restaurant Owner Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-3">Welcome, Restaurant Owner!</h2>
+
+<div class="row mt-4">
+
+    <!-- Manage Restaurant -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Restaurant</h5>
+                <p class="card-text">Add or update your restaurant profile and location.</p>
+                <a asp-area="RestaurantOwner" asp-controller="Restaurants" asp-action="Index" class="btn btn-primary">Manage</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Menu -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Menu Management</h5>
+                <p class="card-text">Add, edit, or remove items from your restaurant's menu.</p>
+                <a asp-area="RestaurantOwner" asp-controller="Menus" asp-action="Index" class="btn btn-success">Manage Menu</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Orders -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Orders</h5>
+                <p class="card-text">View and manage customer orders in real-time.</p>
+                <a asp-area="RestaurantOwner" asp-controller="Orders" asp-action="Index" class="btn btn-warning">View Orders</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offers and Promotions -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Offers & Promotions</h5>
+                <p class="card-text">Create and manage discounts, deals, and promo codes.</p>
+                <a asp-area="RestaurantOwner" asp-controller="Offers" asp-action="Index" class="btn btn-info">Manage Offers</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews & Ratings -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Customer Feedback</h5>
+                <p class="card-text">Read what customers are saying about your food and service.</p>
+                <a asp-area="RestaurantOwner" asp-controller="Reviews" asp-action="Index" class="btn btn-secondary">View Feedback</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
