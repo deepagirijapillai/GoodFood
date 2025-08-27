@@ -46,6 +46,12 @@
                                     <a class="nav-link text-dark" asp-area="DeliveryPerson" asp-controller="Dashboard" asp-action="Index">Home</a>
                                 </li>
                             }
+                            else if (roles.Contains("User"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index">Home</a>
+                                </li>
+                            }
                         }
                         else
                         {

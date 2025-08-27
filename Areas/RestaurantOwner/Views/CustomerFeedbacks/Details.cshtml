@@ -1,0 +1,8 @@
+﻿@model GoodFood.Models.CustomerFeedback
+
+<h2>Feedback Details</h2>
+<p><strong>Customer:</strong> @Model.CustomerName</p>
+<p><strong>Rating:</strong> @Model.Rating</p>
+<p><strong>Comment:</strong> @Model.Comment</p>
+<p><strong>Date:</strong> @Model.CreatedDate.ToShortDateString()</p>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

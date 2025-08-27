@@ -3,6 +3,7 @@ using System;
 using GoodFood.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoodFood.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805180915_AddOrderAndOrderDetailTables")]
+    partial class AddOrderAndOrderDetailTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -81,31 +84,6 @@ namespace GoodFood.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("GoodFood.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MenuItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuItemId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("GoodFood.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -140,36 +118,6 @@ namespace GoodFood.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Coupons");
-                });
-
-            modelBuilder.Entity("GoodFood.Models.CustomerFeedback", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("RestaurantOwnerId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestaurantOwnerId");
-
-                    b.ToTable("CustomerFeedbacks");
                 });
 
             modelBuilder.Entity("GoodFood.Models.MenuItem", b =>
@@ -212,38 +160,6 @@ namespace GoodFood.Data.Migrations
                     b.ToTable("MenuItems");
                 });
 
-            modelBuilder.Entity("GoodFood.Models.Offer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("DiscountPercentage")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("RestaurantOwnerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestaurantOwnerId");
-
-                    b.ToTable("Offers");
-                });
-
             modelBuilder.Entity("GoodFood.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -251,6 +167,7 @@ namespace GoodFood.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("OrderDate")
@@ -474,34 +391,6 @@ namespace GoodFood.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GoodFood.Models.CartItem", b =>
-                {
-                    b.HasOne("GoodFood.Models.MenuItem", "MenuItem")
-                        .WithMany()
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GoodFood.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuItem");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GoodFood.Models.CustomerFeedback", b =>
-                {
-                    b.HasOne("GoodFood.Models.ApplicationUser", "RestaurantOwner")
-                        .WithMany()
-                        .HasForeignKey("RestaurantOwnerId");
-
-                    b.Navigation("RestaurantOwner");
-                });
-
             modelBuilder.Entity("GoodFood.Models.MenuItem", b =>
                 {
                     b.HasOne("GoodFood.Models.Category", "Category")
@@ -525,20 +414,13 @@ namespace GoodFood.Data.Migrations
                     b.Navigation("SubCategory");
                 });
 
-            modelBuilder.Entity("GoodFood.Models.Offer", b =>
-                {
-                    b.HasOne("GoodFood.Models.ApplicationUser", "RestaurantOwner")
-                        .WithMany()
-                        .HasForeignKey("RestaurantOwnerId");
-
-                    b.Navigation("RestaurantOwner");
-                });
-
             modelBuilder.Entity("GoodFood.Models.Order", b =>
                 {
                     b.HasOne("GoodFood.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });
@@ -552,7 +434,7 @@ namespace GoodFood.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("GoodFood.Models.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -633,11 +515,6 @@ namespace GoodFood.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GoodFood.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -104,7 +104,7 @@ public class MenusController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.MenuItems.Add(menuItem);
+            _context.MenuItems.Update(menuItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

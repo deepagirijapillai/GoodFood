@@ -1,0 +1,38 @@
+﻿@model GoodFood.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details - #@Model.Id</h2>
+
+<p><strong>Customer:</strong> @Model.ApplicationUser.UserName</p>
+<p><strong>Status:</strong> @Model.Status</p>
+<p><strong>Date:</strong> @Model.OrderDate.ToString("g")</p>
+<p><strong>Total:</strong> ₹@Model.TotalAmount</p>
+
+<hr />
+
+<h4>Items</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Dish</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderDetails)
+    {
+        <tr>
+            <td>@item.MenuItem.Name</td>
+            <td>@item.Quantity</td>
+            <td>₹@item.Price</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Orders</a>
