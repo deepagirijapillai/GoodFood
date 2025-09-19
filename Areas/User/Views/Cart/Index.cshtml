@@ -1,67 +1,71 @@
-﻿@model IEnumerable<GoodFood.Models.CartItem>
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    ViewData["Title"] = "My Cart";
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<GoodFood.Models.CartItem>
+    @{
+    ViewData["Title"] = "Your Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    decimal total = Model?.Sum(item => item.MenuItem.Price * item.Quantity) ?? 0;
-}
+    }
 
-<h2 class="mb-4">My Cart</h2>
+    <h2 class="text-center mb-4">Your Cart</h2>
 
-@if (Model == null || !Model.Any())
+    @if (!Model.Any())
 {
-    <div class="alert alert-info">
-        Your cart is empty.
-        <a asp-area="User" asp-controller="Menu" asp-action="Index" class="btn btn-link p-0">Browse Menu</a>.
+    <div class="text-center">
+        <p>Your cart is empty.</p>
+        <a asp-area="User" asp-controller="Menu" asp-action="Index" class="btn btn-primary">
+            Browse Menu
+        </a>
     </div>
 }
 else
 {
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-light">
             <tr>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th></th>
+                <th style="width:40%">Item</th>
+                <th style="width:15%">Price</th>
+                <th style="width:25%">Quantity</th>
+                <th style="width:20%">Subtotal</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.MenuItem.Name</td>
-                    <td>@item.MenuItem.Price.ToString("C")</td>
-                    <td>
-                        <div class="d-flex">
-                            <form asp-controller="Cart" asp-action="Add" method="post" class="me-2">
-                                <input type="hidden" name="menuItemId" value="@item.MenuItemId" />
-                                <button type="submit" class="btn btn-sm btn-outline-primary">+</button>
-                            </form>
-                            <span class="px-2">@item.Quantity</span>
-                            <form asp-controller="Cart" asp-action="Remove" method="post" class="ms-2">
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">-</button>
-                            </form>
-                        </div>
-                    </td>
-                    <td>@(item.MenuItem.Price* item.Quantity).ToString("C")</td>
-                    <td>
-                        <form asp-controller="Cart" asp-action="Remove" method="post">
+            <tr>
+                <td>@item.MenuItem.Name</td>
+                <td>₹@item.MenuItem.Price</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <!-- Decrease quantity -->
+                        <form asp-area="User" asp-controller="Cart" asp-action="Remove" method="post" class="me-2">
                             <input type="hidden" name="id" value="@item.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger">-</button>
                         </form>
-                    </td>
-                </tr>
+
+                        <span class="px-2 fw-bold">@item.Quantity</span>
+
+                        <!-- Increase quantity -->
+                        <form asp-area="User" asp-controller="Cart" asp-action="Add" method="post" class="ms-2">
+                            <input type="hidden" name="menuItemId" value="@item.MenuItemId" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">+</button>
+                        </form>
+                    </div>
+                </td>
+                <td>₹@(item.MenuItem.Price * item.Quantity)</td>
+            </tr>
             }
         </tbody>
     </table>
 
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <h4>Total: @total.ToString("C")</h4>
-        <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg">
-            Proceed to Checkout
+    <div class="d-flex justify-content-between mt-4">
+        <a asp-area="User" asp-controller="Menu" asp-action="Index" class="btn btn-secondary">
+            Browse Menu
         </a>
+        <h4 class="fw-bold">Total: ₹@ViewBag.Total</h4>
+        <form asp-area="User" asp-controller="Order" asp-action="PlaceOrder" method="post">
+            <button type="submit" class="btn btn-success mt-3">
+                Place Order
+            </button>
+        </form>
+
     </div>
 }

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<GoodFood.Models.CartItem>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<tbody id="cart-body">
+    @foreach (var item in Model)
+    {
+        <tr data-id="@item.Id">
+            <td>@item.MenuItem.Name</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-primary update-cart" data-action="add" data-id="@item.MenuItemId">+</button>
+                    <span class="px-2 quantity">@item.Quantity</span>
+                    <button class="btn btn-sm btn-outline-danger update-cart" data-action="remove" data-id="@item.Id">-</button>
+                </div>
+            </td>
+            <td>₹@item.MenuItem.Price</td>
+            <td class="line-total">₹@(item.MenuItem.Price* item.Quantity)</td>
+        </tr>
+    }
+</tbody>
+
+<div id="cart-total">
+    Total: ₹@Model.Sum(i => i.MenuItem.Price * i.Quantity)
+</div>

@@ -48,7 +48,7 @@ public class LoginModel : PageModel
                     else if (roles.Contains("RestaurantOwner"))
                         return RedirectToAction("Index", "Dashboard", new { area = "RestaurantOwner" });
                     else if (roles.Contains("User"))
-                        return RedirectToAction("Index", "Dashboard", new { area = "User" });
+                        return RedirectToAction("Index", "Menu", new { area = "User" });
                     //else if (roles.Contains("DeliveryPerson"))
                     //    return RedirectToAction("Index", "Delivery", new { area = "DeliveryPerson" });
                     Console.WriteLine("Login success");

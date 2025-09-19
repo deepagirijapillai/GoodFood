@@ -24,8 +24,11 @@ public class CartController : Controller
         var user = await _userManager.GetUserAsync(User);
         var cartItems = await _context.CartItems
             .Include(c => c.MenuItem)
+            .ThenInclude(c => c.Category)
             .Where(c => c.UserId == user.Id)
             .ToListAsync();
+
+        ViewBag.Total = cartItems.Sum(i => i.MenuItem.Price * i.Quantity);
         return View(cartItems);
     }
 
@@ -42,8 +45,6 @@ public class CartController : Controller
         }
         else
         {
-            var menuItem = await _context.MenuItems.FindAsync(menuItemId);
-            if (menuItem == null) { return NotFound(); }
             var cartItem = new CartItem
             {
                 UserId = user.Id,
@@ -55,20 +56,28 @@ public class CartController : Controller
         }
 
         await _context.SaveChangesAsync();
-
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
     public async Task<IActionResult> Remove(int id)
     {
-        var item = await _context.CartItems.FindAsync(id);
-        if (item != null) 
-        { 
-            _context.CartItems.Remove(item); 
-            await _context.SaveChangesAsync(); 
+        var item = await _context.CartItems
+            .Include(c => c.MenuItem)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        if (item != null)
+        {
+            if (item.Quantity > 1)
+            {
+                item.Quantity--;
+            }
+            else 
+            {
+                _context.CartItems.Remove(item);
+            }
+            await _context.SaveChangesAsync();
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 }

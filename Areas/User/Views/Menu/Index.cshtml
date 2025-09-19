@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<GoodFood.Models.MenuItem>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Browse Menu";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,8 +20,7 @@
                         SubCategory: @item.SubCategory?.Name
                     </p>
                     <p class="fw-bold mb-3">₹@item.Price</p>
-
-                    <form asp-area="User" asp-controller="Menu" asp-action="Add" method="post" class="mt-auto">
+                    <form asp-area="User" asp-controller="Cart" asp-action="Add" method="post" class="mt-auto">
                         <input type="hidden" name="menuItemId" value="@item.Id" />
                         <button type="submit" class="btn btn-primary w-100">
                             Add to Cart
