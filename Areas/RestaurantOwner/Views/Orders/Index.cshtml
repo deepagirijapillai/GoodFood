@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<GoodFood.Models.Order>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Orders";
@@ -39,7 +40,7 @@ else
                             @foreach (var detail in order.OrderDetails)
                             {
                                 <li>
-                                    @detail.MenuItem?.Name (x@detail.Quantity)
+                                    @($"{detail.MenuItem.Name} (x{detail.Quantity})")
                                 </li>
                             }
                         </ul>

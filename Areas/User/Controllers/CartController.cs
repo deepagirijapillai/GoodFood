@@ -37,6 +37,13 @@ public class CartController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
 
+        var menuitem = await _context.MenuItems.FindAsync(menuItemId);
+
+        if (menuitem == null)
+        {
+            TempData["Error"] = "This menu item is no longer available.";
+            return RedirectToAction("Index", "Menu");
+        }
         var existingItem = await _context.CartItems
             .FirstOrDefaultAsync(c => c.UserId == user.Id && c.MenuItemId == menuItemId);
         if (existingItem != null)
