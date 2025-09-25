@@ -48,6 +48,12 @@ else
                     <td>
                         <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">Details</a>
                     </td>
+                    <td>
+                        <form asp-area="RestaurantOwner" asp-controller="Orders" asp-action="MarkProcessed" method="post">
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Mark Processed</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

@@ -1,7 +1,5 @@
 ﻿using GoodFood.Data;
-using GoodFood.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +20,7 @@ public class OrdersController : Controller
                     .Include(o => o.ApplicationUser)
                     .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.MenuItem)
+                    .Where(o => o.Status == "Pending")
                     .ToListAsync();
         return View(orders);
     }
@@ -31,7 +30,22 @@ public class OrdersController : Controller
                     .Include(o => o.ApplicationUser)
                     .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.MenuItem)
-                    .FirstOrDefaultAsync(o=>o.Id==id);
-        return order==null ? NotFound() : View(order);
+                    .FirstOrDefaultAsync(o => o.Id == id);
+        return order == null ? NotFound() : View(order);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> MarkProcessed(int id)
+    {
+        var order = await _context.Orders.FindAsync(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+        order.Status = "Processed";
+        _context.Orders.Update(order);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
     }
 }
