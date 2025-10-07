@@ -70,4 +70,10 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.SeedRolesAndAdminAsync(services);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    Console.WriteLine($"Database provider: {context.Database.ProviderName}");
+}
+
 app.Run();

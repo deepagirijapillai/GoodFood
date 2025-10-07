@@ -51,6 +51,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="User" asp-controller="Menu" asp-action="Index">Home</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark position-relative" asp-area="User" asp-controller="Cart" asp-action="Index">
+                                        🛒 Cart
+                                        @if (ViewBag.CartCount != null && (int)ViewBag.CartCount > 0)
+                                        {
+                                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                                                @ViewBag.CartCount
+                                            </span>
+                                        }
+                                    </a>
+                                </li>
                             }
                         }
                         else

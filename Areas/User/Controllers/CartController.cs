@@ -28,7 +28,16 @@ public class CartController : Controller
             .Where(c => c.UserId == user.Id)
             .ToListAsync();
 
+        var activeCoupons = await _context.Coupons
+            .Where(c => c.IsActive).ToListAsync();
+        ViewBag.AvailableCoupons = activeCoupons;
+        ViewBag.CartCount = cartItems.Count();
         ViewBag.Total = cartItems.Sum(i => i.MenuItem.Price * i.Quantity);
+
+        if (TempData.ContainsKey("AppliedCoupon"))
+        {
+            ViewBag.AppliedCoupon = TempData["AppliedCoupon"];
+        }
         return View(cartItems);
     }
 
@@ -85,6 +94,30 @@ public class CartController : Controller
             await _context.SaveChangesAsync();
         }
 
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ApplyCoupon(string couponCode)
+    {
+        if (string.IsNullOrWhiteSpace(couponCode))
+        {
+            TempData["Error"] = "Your cart is empty!";
+            return RedirectToAction("Index");
+        }
+        var coupon = await _context.Coupons
+                        .Where(c => c.Code == couponCode && c.IsActive)
+                        .FirstOrDefaultAsync();
+
+        if (coupon == null)
+        {
+            TempData["Error"] = "Invalid or expired coupon.";
+            return RedirectToAction("Index");
+        }
+
+        TempData["AppliedCoupon"] = coupon.Code;
+
+        TempData["Success"] = $"Coupon {coupon.Code} applied. {coupon.DiscountPercentage}% OFF!";
         return RedirectToAction(nameof(Index));
     }
 }
