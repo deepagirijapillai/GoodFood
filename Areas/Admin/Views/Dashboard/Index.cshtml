@@ -1,4 +1,4 @@
-﻿@model GoodFood.Models.Category
+﻿@model GoodFood.Models.AdminDashboardModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Admin Dashboard";
@@ -12,7 +12,7 @@
         <div class="card text-white bg-primary mb-3">
             <div class="card-header">Total Users</div>
             <div class="card-body">
-                <h5 class="card-title">42</h5>
+                <h5 class="card-title">@Model.TotalUsers</h5>
                 <p class="card-text">Registered Restaurant Owners & Delivery Personnel.</p>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="card text-white bg-success mb-3">
             <div class="card-header">Total Categories</div>
             <div class="card-body">
-                <h5 class="card-title">10</h5>
+                <h5 class="card-title">@Model.TotalCategories</h5>
                 <p class="card-text">Available food categories for menus.</p>
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="card text-white bg-warning mb-3">
             <div class="card-header">Total Orders</div>
             <div class="card-body">
-                <h5 class="card-title">128</h5>
+                <h5 class="card-title">@Model.TotalOrders</h5>
                 <p class="card-text">Orders placed across all restaurants.</p>
             </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="card text-white bg-danger mb-3">
             <div class="card-header">Coupons</div>
             <div class="card-body">
-                <h5 class="card-title">5 Active</h5>
+                <h5 class="card-title">@Model.ActiveCoupons</h5>
                 <p class="card-text">Ongoing coupon discounts.</p>
             </div>
         </div>
