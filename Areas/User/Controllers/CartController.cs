@@ -19,6 +19,7 @@ public class CartController : Controller
         _context = context;
         _userManager = userManager;
     }
+
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetUserAsync(User);

@@ -34,4 +34,6 @@ public class MenuItem
     [ForeignKey("SubCategoryId")]
     [ValidateNever]
     public SubCategory SubCategory { get; set; }
+
+    public bool IsActive { get; set; } = true;
 }

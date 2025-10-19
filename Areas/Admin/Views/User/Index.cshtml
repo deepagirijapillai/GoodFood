@@ -6,27 +6,42 @@
 
 <h2 class="mt-4">Registered Users</h2>
 
-<table class="table table-striped">
-    <thead>
+<table class="table table-striped align-middle">
+    <thead class="table-dark">
         <tr>
             <th>Email</th>
             <th>User Name</th>
             <th>Role(s)</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var entry in Model)
         {
-            <tr>
+            var isActive = entry.User.IsActive;
+            <tr class="@(isActive ? "" : "table-secondary")">
                 <td>@entry.User.Email</td>
                 <td>@entry.User.UserName</td>
                 <td>@string.Join(", ", entry.Roles)</td>
                 <td>
-                    <form asp-action="Delete" asp-route-id="@entry.User.Id" method="post" onsubmit="return confirm('Are you sure to delete this user?');">
-                        <input type="hidden" name="id" value="@entry.User.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                    <span class="badge @(isActive ? "bg-success" : "bg-danger")">
+                        @(isActive ? "Active" : "Deactivated")
+                    </span>
+                </td>
+                <td>
+                    @if (isActive)
+                    {
+                        <form asp-action="Delete" asp-route-id="@entry.User.Id" method="post"
+                              onsubmit="return confirm('Are you sure you want to deactivate this user?');">
+                            <input type="hidden" name="id" value="@entry.User.Id" />
+                            <button type="submit" class="btn btn-warning btn-sm">Deactivate</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button class="btn btn-secondary btn-sm" disabled>Deactivated</button>
+                    }
                 </td>
             </tr>
         }

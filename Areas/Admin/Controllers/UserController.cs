@@ -45,72 +45,56 @@ public class UserController : Controller
                 return RedirectToAction("Index");
             }
 
-            var cartItems = _context.CartItems
-                .Where(c => c.UserId == id)
-                .ToList();
-            _context.CartItems.RemoveRange(cartItems);
-
-            var orders = _context.Orders
-                .Where(o => o.ApplicationUserId == id)
-                .ToList();
-
-            foreach (var order in orders)
-            {
-                var orderDetails = _context.OrderDetails
-                    .Where(od => od.OrderId == order.Id)
-                    .ToList();
-                _context.OrderDetails.RemoveRange(orderDetails);
-            }
-            _context.Orders.RemoveRange(orders);
-
             var restaurants = _context.Restaurants
                 .Where(r => r.ApplicationUserId == id)
                 .ToList();
 
-            foreach (var restarant in restaurants)
+            if (restaurants.Any())
             {
-                var menuItems = _context.MenuItems
-                    .Where(m => m.RestaurantId == restarant.Id)
+                var restaurantIds = restaurants.Select(r => r.Id).ToList();
+
+                var pendingOrders = _context.OrderDetails
+                    .Include(o => o.Order)
+                    .Include(o => o.MenuItem)
+                    .Where(o => restaurantIds.Contains(o.MenuItem.RestaurantId) && o.Order.Status == "Pending")
+                    .Select(o => o.Order)
+                    .Distinct()
                     .ToList();
-                _context.MenuItems.RemoveRange(menuItems);
+
+                if (pendingOrders.Any())
+                {
+                    TempData["Error"] = $"Cannot delete this user — {pendingOrders.Count} pending orders exist for their restaurant(s)."; ;
+                    return RedirectToAction("Index");
+                }
+            }
+
+            foreach (var rest in restaurants)
+            {
+                rest.IsActive = false;
+
+                var menuItems = _context.MenuItems
+                    .Where(m => m.RestaurantId == rest.Id)
+                    .ToList();
+                foreach (var item in menuItems)
+                { item.IsActive = false; }
 
                 var offers = _context.Offers
-                    .Where(m => m.RestaurantOwnerId == restarant.ApplicationUserId)
+                    .Where(m => m.RestaurantOwnerId == rest.ApplicationUserId)
                     .ToList();
+                foreach (var item in offers)
+                { item.IsActive = false; }
 
-                var offerIds = offers.Select(o=>o.Id).ToList();
-                var relatedOrders = _context.Orders
-                    .Where(o => o.OfferId != null && offerIds.Contains(o.OfferId.Value))
-                    .ToList();
-
-                foreach (var order in relatedOrders)
-                {
-                    order.OfferId = null;
-                }
-                _context.Offers.RemoveRange(offers);
             }
-            _context.Restaurants.RemoveRange(restaurants);
 
             _context.SaveChanges();
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (!result.Succeeded)
-            {
-                transaction.Rollback();
-                TempData["Error"] = $"Failed to delete user.";
-                return RedirectToAction("Index");
-            }
             transaction.Commit();
 
-            TempData["Success"] = "User and related data deleted successfully.";
+            TempData["Success"] = "User soft-deleted successfully (deactivated).";
             return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
-            var inner = ex.InnerException?.Message;
-            Console.WriteLine($"Error: {inner}");
-            TempData["Error"] = $"DB Update Error: {inner}";
+            Console.WriteLine($"Error: {ex.Message}");
             if (transaction != null) transaction.Rollback();
             TempData["Error"] = $"Error while deleting user: {ex.Message}";
             return RedirectToAction("Index");

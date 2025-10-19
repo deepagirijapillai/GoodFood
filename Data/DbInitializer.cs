@@ -29,7 +29,8 @@ public static class DbInitializer
             {
                 UserName = adminEmail,
                 Email = adminEmail,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsActive = true,
             };
 
             var result = await userManager.CreateAsync(user, adminPassword);

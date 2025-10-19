@@ -57,7 +57,7 @@ public class RegisterModel : PageModel
     {
         if (ModelState.IsValid)
         {
-            var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+            var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, IsActive = true };
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {

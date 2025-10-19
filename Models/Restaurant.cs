@@ -23,4 +23,6 @@ public class Restaurant
     [ForeignKey("ApplicationUserId")]
     public ApplicationUser ApplicationUser { get; set; }
 
+    public bool IsActive { get; set; } = true;
+
 }

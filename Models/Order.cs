@@ -22,4 +22,6 @@ public class Order
     public double? DiscountApplied { get; set; }
 
     public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+    public bool IsActive { get; set; } = true;
 }
