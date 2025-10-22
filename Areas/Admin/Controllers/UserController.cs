@@ -68,6 +68,9 @@ public class UserController : Controller
                 }
             }
 
+            user.IsActive = false;
+            _context.SaveChanges();
+
             foreach (var rest in restaurants)
             {
                 rest.IsActive = false;

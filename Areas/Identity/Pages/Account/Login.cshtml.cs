@@ -2,7 +2,6 @@ using GoodFood.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NuGet.Protocol.Plugins;
 using System.ComponentModel.DataAnnotations;
 
 namespace GoodFood.Areas.Identity.Pages.Account;
@@ -35,7 +34,11 @@ public class LoginModel : PageModel
         if (ModelState.IsValid)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-            Console.WriteLine(user == null ? "User not found" : $"User found: {user.Email}");
+            if (user == null || !user.IsActive)
+            {
+                ModelState.AddModelError("", "Your account has been deactivated. Please contact the administrator.");
+                return Page();
+            }
 
             if (user != null)
             {

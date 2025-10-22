@@ -26,7 +26,7 @@ public class DashboardController : Controller
         {
             TotalUsers = await _userManager.Users.CountAsync(),
             TotalCategories = await _context.Categories.CountAsync(),
-            TotalOrders = await _context.Orders.CountAsync(),
+            TotalOrders = await _context.Orders.CountAsync(o=>o.IsActive),
             ActiveCoupons = await _context.Coupons.CountAsync(c=>c.IsActive),
 
         };
